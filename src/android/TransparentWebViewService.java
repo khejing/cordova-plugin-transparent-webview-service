@@ -6,6 +6,11 @@ import org.json.JSONObject;
 
 import com.red_folder.phonegap.plugin.backgroundservice.BackgroundService;
 
+import android.view.WindowManager;
+import android.graphics.PixelFormat;
+import android.view.Gravity;
+import android.widget.LinearLayout;
+import android.webkit.WebView;
 import org.apache.cordova.CordovaWebViewImpl;
 
 public class TransparentWebViewService extends BackgroundService {
