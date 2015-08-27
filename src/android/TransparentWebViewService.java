@@ -48,7 +48,7 @@ public class TransparentWebViewService extends BackgroundService {
     
     @Override
     protected void setConfig(JSONObject config) {
-       return null;
+       
     }     
     
     @Override
