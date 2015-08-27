@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.graphics.PixelFormat;
 import android.view.Gravity;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.webkit.WebView;
 import org.apache.cordova.CordovaWebViewImpl;
 
@@ -25,16 +26,16 @@ public class TransparentWebViewService extends BackgroundService {
         params.width = 0;
         params.height = 0;
 
-        //LinearLayout view = new LinearLayout(this);
-        //view.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        LinearLayout view = new LinearLayout(this);
+        view.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
         WebView wv = new WebView(this);
         wv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-        //view.addView(wv);
+        view.addView(wv);
 		wv.getSettings().setJavaScriptEnabled(true);
         wv.loadUrl("file:///android_asset/www/test.html");
 
-        windowManager.addView(wv, params);//view
+        windowManager.addView(view, params);
 	}
 	
     @Override
