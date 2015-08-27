@@ -13,6 +13,10 @@
 <feature name="TransparentWebViewService">
 <param name="android-package" value="com.yang.eto1.CordovaPlugin.TransparentWebViewServicePlugin.TransparentWebViewService" /></feature></config-file>
 
+<config-file target="AndroidManifest.xml" parent="/manifest">
+	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+</config-file>
+
 <config-file parent="/manifest/application" target="AndroidManifest.xml">
 <service android:name="com.yang.eto1.CordovaPlugin.TransparentWebViewServicePlugin.TransparentWebViewService">
     <intent-filter>         
