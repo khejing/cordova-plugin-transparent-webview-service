@@ -31,7 +31,7 @@ public class TransparentWebViewService extends BackgroundService {
         WebView wv = new WebView(this);
         wv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         //view.addView(wv);
-        wv.loadUrl("file:///android_asset/www/test.html");
+        wv.loadUrl("http://www.baidu.com");//file:///android_asset/www/test.html
 
         windowManager.addView(wv, params);//view
 	}
