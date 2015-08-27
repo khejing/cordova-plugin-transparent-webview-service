@@ -18,7 +18,7 @@ public class TransparentWebViewService extends BackgroundService {
     public void onCreate(){
 		super.onCreate();
 		WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-        LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, LayoutParams.TYPE_PHONE, LayoutParams.FLAG_NOT_TOUCHABLE, PixelFormat.TRANSLUCENT);
+        WindowManager.LayoutParams params = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_PHONE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, PixelFormat.TRANSLUCENT);
         params.gravity = Gravity.TOP | Gravity.LEFT;
         params.x = 0;
         params.y = 0;
