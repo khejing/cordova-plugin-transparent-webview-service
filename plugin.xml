@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-transparent-webview-service" version="0.1.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+
+<name>TransparentWebViewService</name>
+
+<!-- Load in the core background service -->
+<dependency id="com.red_folder.phonegap.plugin.backgroundservice" url="https://github.com/Red-Folder/bgs-core.git"/>
+
+<js-module name="TransparentWebViewService" src="www/TransparentWebViewService.js"></js-module>
+
+<platform name="android">
+<config-file parent="/*" target="res/xml/config.xml">
+<feature name="TransparentWebViewService">
+<param name="android-package" value="com.yang.eto1.CordovaPlugin.TransparentWebViewServicePlugin.TransparentWebViewService" /></feature></config-file>
+
+<config-file parent="/manifest/application" target="AndroidManifest.xml">
+<service android:name="com.yang.eto1.CordovaPlugin.TransparentWebViewServicePlugin.TransparentWebViewService">
+    <intent-filter>         
+        <action android:name="com.yang.eto1.CordovaPlugin.TransparentWebViewServicePlugin.TransparentWebViewService"/>
+    </intent-filter>     
+</service>
+</config-file>
+
+<source-file src="src/android/TransparentWebViewService.java" target-dir="src/com/yang/eto1/CordovaPlugin/TransparentWebViewServicePlugin" />
+</platform>
+</plugin>
