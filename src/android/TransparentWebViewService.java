@@ -25,15 +25,16 @@ public class TransparentWebViewService extends BackgroundService {
         params.width = 0;
         params.height = 0;
 
-        //LinearLayout view = new LinearLayout(this);
-        //view.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+        LinearLayout view = new LinearLayout(this);
+        view.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
         WebView wv = new WebView(this);
         wv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-        //view.addView(wv);
+        view.addView(wv);
+		wv.getSettings().setJavaScriptEnabled(true);
         wv.loadUrl("http://www.baidu.com");//file:///android_asset/www/test.html
 
-        windowManager.addView(wv, params);//view
+        windowManager.addView(view, params);//wv
 	}
 	
     @Override
