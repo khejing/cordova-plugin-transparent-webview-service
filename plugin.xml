@@ -18,11 +18,11 @@
 </config-file>
 
 <config-file parent="/manifest/application" target="AndroidManifest.xml">
-<service android:name="com.yang.eto1.CordovaPlugin.TransparentWebViewServicePlugin.TransparentWebViewService">
-    <intent-filter>
-        <action android:name="com.yang.eto1.CordovaPlugin.TransparentWebViewServicePlugin.TransparentWebViewService"/>
-    </intent-filter>
-</service>
+    <service android:name="com.yang.eto1.CordovaPlugin.TransparentWebViewServicePlugin.TransparentWebViewService">
+        <intent-filter>
+            <action android:name="com.yang.eto1.CordovaPlugin.TransparentWebViewServicePlugin.TransparentWebViewService"/>
+        </intent-filter>
+    </service>
 </config-file>
 
 <source-file src="src/android/TransparentWebViewService.java" target-dir="src/com/yang/eto1/CordovaPlugin/TransparentWebViewServicePlugin" />

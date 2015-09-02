@@ -10,15 +10,16 @@ import android.view.WindowManager;
 import android.graphics.PixelFormat;
 import android.view.Gravity;
 import android.widget.LinearLayout;
-//import android.widget.RelativeLayout;
 import android.webkit.WebView;
-import org.apache.cordova.CordovaWebViewImpl;
+import android.webkit.WebSettings;
 
 public class TransparentWebViewService extends BackgroundService {
 	@Override
     public void onCreate(){
 		super.onCreate();
+
 		WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_PHONE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
         params.gravity = Gravity.TOP | Gravity.LEFT;
         params.x = 0;
@@ -26,33 +27,31 @@ public class TransparentWebViewService extends BackgroundService {
         params.width = 0;
         params.height = 0;
 
-        //LinearLayout view = new LinearLayout(this);
-        //view.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-
         WebView wv = new WebView(this);
         wv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-        //view.addView(wv);
-		wv.getSettings().setJavaScriptEnabled(true);
-        wv.loadUrl("file:///android_asset/www/test.html");
+        final WebSettings settings = wv.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setDomStorageEnabled(true);
+        wv.loadUrl("file:///android_asset/www/background.html");
 
-        windowManager.addView(wv, params);//view
+        windowManager.addView(wv, params);
 	}
-	
+
     @Override
     protected JSONObject doWork() {
        return null;
     }
-    
+
     @Override
     protected JSONObject getConfig() {
        return null;
     }
-    
+
     @Override
     protected void setConfig(JSONObject config) {
        
     }     
-    
+
     @Override
     protected JSONObject initialiseLatestResult() {
        return null;
