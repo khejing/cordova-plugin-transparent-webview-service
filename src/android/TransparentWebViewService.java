@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.webkit.WebView;
 import android.webkit.WebSettings;
+import android.webkit.JavascriptInterface;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.app.PendingIntent;
