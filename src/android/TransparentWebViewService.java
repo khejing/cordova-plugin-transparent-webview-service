@@ -70,7 +70,7 @@ public class TransparentWebViewService extends BackgroundService {
                         PendingIntent.getActivity(
                         this,
                         0,
-                        notifyIntent
+                        notifyIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
                 builder.setContentIntent(notifyIntent);
