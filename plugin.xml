@@ -26,5 +26,7 @@
 </config-file>
 
 <source-file src="src/android/TransparentWebViewService.java" target-dir="src/com/yang/eto1/CordovaPlugin/TransparentWebViewServicePlugin" />
+<source-file src="libs/android/android-support-v4.jar" target-dir="libs" />
+
 </platform>
 </plugin>
