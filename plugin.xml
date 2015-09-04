@@ -4,7 +4,7 @@
 <name>TransparentWebViewService</name>
 
 <!-- Load in the core background service -->
-<dependency id="com.red_folder.phonegap.plugin.backgroundservice" url="https://github.com/Red-Folder/bgs-core.git"/>
+<dependency id="com.red_folder.phonegap.plugin.backgroundservice" url="https://github.com/khejing/bgs-core.git"/>
 
 <js-module name="TransparentWebViewService" src="www/TransparentWebViewService.js"></js-module>
 
