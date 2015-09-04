@@ -25,6 +25,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
 public class TransparentWebViewService extends BackgroundService {
+    private static final String TAG = "TransparentWebViewService";
+
 	@Override
     public void onCreate(){
 		super.onCreate();
