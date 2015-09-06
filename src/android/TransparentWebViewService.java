@@ -63,14 +63,14 @@ public class TransparentWebViewService extends BackgroundService {
         notifyIntent.setComponent(findMainActivityComponentName(this));
         // Sets the Activity to start in a new task
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent notifyIntent =
+        PendingIntent notifyPendingIntent =
                 PendingIntent.getActivity(
                 this,
                 0,
                 notifyIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
-        builder.setContentIntent(notifyIntent);
+        builder.setContentIntent(notifyPendingIntent);
         Class rClass = Class.forName(pacakageName+".R.drawable");
         Field field = rClass.getField("icon");
         int property = field.getInt(rClass);
