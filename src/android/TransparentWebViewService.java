@@ -94,6 +94,7 @@ public class TransparentWebViewService extends BackgroundService {
         NotificationManager mNotificationManager =
             (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(1, builder.build());
+        Log.i(TAG, "show notification finished");
     }
 
     private static ComponentName findMainActivityComponentName(Context context) {
@@ -116,6 +117,7 @@ public class TransparentWebViewService extends BackgroundService {
     class SystemExposedJsApi {
         @JavascriptInterface
         public void onMessage(String topic, String message){
+            Log.i(TAG, "onMessage has been called");
             if(TransparentWebViewService.this.hasListenerAdded()){
                 //send message to CordovaActivity
             }else{
