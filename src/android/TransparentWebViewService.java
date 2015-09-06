@@ -29,7 +29,6 @@ import android.util.Log;
 
 public class TransparentWebViewService extends BackgroundService {
     private static final String TAG = "TransparentWebViewService";
-    private String packageName;
 
 	@Override
     public void onCreate(){
@@ -63,7 +62,8 @@ public class TransparentWebViewService extends BackgroundService {
     private void showNotification(){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         Intent notifyIntent = new Intent();
-        notifyIntent.setComponent(findMainActivityComponentName(this));
+        ComponentName mainActivity = findMainActivityComponentName(this);
+        notifyIntent.setComponent(mainActivity);
         // Sets the Activity to start in a new task
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent notifyPendingIntent =
@@ -74,7 +74,7 @@ public class TransparentWebViewService extends BackgroundService {
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
         builder.setContentIntent(notifyPendingIntent);
-        Class rClass = Class.forName(packageName+".R.drawable");
+        Class rClass = Class.forName(mainActivity.getPackageName()+".R.drawable");
         Field field = rClass.getField("icon");
         int property = field.getInt(rClass);
         builder.setSmallIcon(property);
@@ -96,7 +96,6 @@ public class TransparentWebViewService extends BackgroundService {
 
         for (ActivityInfo activityInfo : packageInfo.activities) {
             if ((activityInfo.flags & ActivityInfo.FLAG_EXCLUDE_FROM_RECENTS) == 0) {
-                packageName = packageInfo.packageName;
                 return new ComponentName(packageInfo.packageName, activityInfo.name);
             }
         }
