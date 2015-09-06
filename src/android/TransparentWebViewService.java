@@ -1,5 +1,7 @@
 package com.yang.eto1.CordovaPlugin.TransparentWebViewServicePlugin;
 
+import java.lang.reflect.Field;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +29,7 @@ import android.util.Log;
 
 public class TransparentWebViewService extends BackgroundService {
     private static final String TAG = "TransparentWebViewService";
+    private String packageName;
 
 	@Override
     public void onCreate(){
@@ -71,7 +74,7 @@ public class TransparentWebViewService extends BackgroundService {
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
         builder.setContentIntent(notifyPendingIntent);
-        Class rClass = Class.forName(pacakageName+".R.drawable");
+        Class rClass = Class.forName(packageName+".R.drawable");
         Field field = rClass.getField("icon");
         int property = field.getInt(rClass);
         builder.setSmallIcon(property);
@@ -79,7 +82,7 @@ public class TransparentWebViewService extends BackgroundService {
         builder.setContentText("test");
         NotificationManager mNotificationManager =
             (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(id, builder.build());
+        mNotificationManager.notify(1, builder.build());
     }
 
     private static ComponentName findMainActivityComponentName(Context context) {
@@ -101,8 +104,6 @@ public class TransparentWebViewService extends BackgroundService {
     }
 
     class SystemExposedJsApi {
-        private String packageName;
-
         @JavascriptInterface
         public void onMessage(String topic, String message){
             if(TransparentWebViewService.this.hasListenerAdded()){
