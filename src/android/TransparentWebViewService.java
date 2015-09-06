@@ -27,8 +27,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
-import com.yang.eto1.CordovaApp.R.drawable;
-
 public class TransparentWebViewService extends BackgroundService {
     private static final String TAG = "TransparentWebViewService";
 
@@ -76,15 +74,14 @@ public class TransparentWebViewService extends BackgroundService {
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
         builder.setContentIntent(notifyPendingIntent);
-        //try{
-            //Class rClass = Class.forName(mainActivity.getPackageName()+".R.drawable");
-            //Field field = rClass.getField("icon");
-            //int property = field.getInt(rClass);
-            //builder.setSmallIcon(property);
-            builder.setSmallIcon(drawable.icon);
+        try{
+            Class rClass = Class.forName(mainActivity.getPackageName()+".R$drawable");
+            Field field = rClass.getField("icon");
+            int property = field.getInt(rClass);
+            builder.setSmallIcon(property);
             builder.setContentTitle("TEST");
             builder.setContentText("test");            
-        /*}catch(ClassNotFoundException e){
+        }catch(ClassNotFoundException e){
             Log.e(TAG, mainActivity.getPackageName()+".R.drawable"+" class in R.java not found");
             return;
         }catch(NoSuchFieldException e){
@@ -93,7 +90,7 @@ public class TransparentWebViewService extends BackgroundService {
         }catch(IllegalAccessException e){
             Log.e(TAG, "get icon field value error");
             return;            
-        }*/
+        }
         NotificationManager mNotificationManager =
             (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(1, builder.build());
