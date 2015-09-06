@@ -52,8 +52,8 @@ public class TransparentWebViewService extends BackgroundService {
             Log.e(TAG, "Disabled addJavascriptInterface() bridge since Android version is old.");
             return;
         }
-        SystemExposedJsApi exposedJsApi = new SystemExposedJsApi();
-        wv.addJavascriptInterface(exposedJsApi, "simpleCordova");
+        //SystemExposedJsApi exposedJsApi = new SystemExposedJsApi();
+        //wv.addJavascriptInterface(exposedJsApi, "simpleCordova");
 
         wv.loadUrl("file:///android_asset/www/background.html");
         windowManager.addView(wv, params);
