@@ -76,7 +76,7 @@ public class TransparentWebViewService extends BackgroundService {
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
         builder.setContentIntent(notifyPendingIntent);
-        try{
+        //try{
             //Class rClass = Class.forName(mainActivity.getPackageName()+".R.drawable");
             //Field field = rClass.getField("icon");
             //int property = field.getInt(rClass);
@@ -84,7 +84,7 @@ public class TransparentWebViewService extends BackgroundService {
             builder.setSmallIcon(drawable.icon);
             builder.setContentTitle("TEST");
             builder.setContentText("test");            
-        }/*catch(ClassNotFoundException e){
+        /*}catch(ClassNotFoundException e){
             Log.e(TAG, mainActivity.getPackageName()+".R.drawable"+" class in R.java not found");
             return;
         }catch(NoSuchFieldException e){
