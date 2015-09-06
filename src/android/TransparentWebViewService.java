@@ -84,7 +84,7 @@ public class TransparentWebViewService extends BackgroundService {
             builder.setSmallIcon(drawable.icon);
             builder.setContentTitle("TEST");
             builder.setContentText("test");            
-        }catch(ClassNotFoundException e){
+        }/*catch(ClassNotFoundException e){
             Log.e(TAG, mainActivity.getPackageName()+".R.drawable"+" class in R.java not found");
             return;
         }catch(NoSuchFieldException e){
@@ -93,7 +93,7 @@ public class TransparentWebViewService extends BackgroundService {
         }catch(IllegalAccessException e){
             Log.e(TAG, "get icon field value error");
             return;            
-        }
+        }*/
         NotificationManager mNotificationManager =
             (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(1, builder.build());
