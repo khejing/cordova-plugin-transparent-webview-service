@@ -59,7 +59,8 @@ public class TransparentWebViewService extends BackgroundService {
 
     private void showNotification(){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        Intent notifyIntent = new Intent(findMainActivityComponentName(this));
+        Intent notifyIntent = new Intent();
+        notifyIntent.setComponent(findMainActivityComponentName(this));
         // Sets the Activity to start in a new task
         notifyIntent.setFlags(FLAG_ACTIVITY_NEW_TASK);
         PendingIntent notifyIntent =
