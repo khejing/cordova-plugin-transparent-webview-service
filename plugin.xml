@@ -14,6 +14,9 @@
 <param name="android-package" value="com.yang.eto1.CordovaPlugin.TransparentWebViewServicePlugin.TransparentWebViewService" /></feature></config-file>
 
 <config-file target="AndroidManifest.xml" parent="/manifest">
+    <!-- Permissions the Application Requires -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 </config-file>
 
