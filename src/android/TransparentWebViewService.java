@@ -27,6 +27,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
+import com.yang.eto1.CordovaApp.R.drawable;
+
 public class TransparentWebViewService extends BackgroundService {
     private static final String TAG = "TransparentWebViewService";
 
@@ -75,10 +77,11 @@ public class TransparentWebViewService extends BackgroundService {
         );
         builder.setContentIntent(notifyPendingIntent);
         try{
-            Class rClass = Class.forName(mainActivity.getPackageName()+".R.drawable");
-            Field field = rClass.getField("icon");
-            int property = field.getInt(rClass);
-            builder.setSmallIcon(property);
+            //Class rClass = Class.forName(mainActivity.getPackageName()+".R.drawable");
+            //Field field = rClass.getField("icon");
+            //int property = field.getInt(rClass);
+            //builder.setSmallIcon(property);
+            builder.setSmallIcon(drawable.icon);
             builder.setContentTitle("TEST");
             builder.setContentText("test");            
         }catch(ClassNotFoundException e){
