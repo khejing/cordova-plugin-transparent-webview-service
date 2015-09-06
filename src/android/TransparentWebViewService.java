@@ -82,7 +82,7 @@ public class TransparentWebViewService extends BackgroundService {
             builder.setContentTitle("TEST");
             builder.setContentText("test");            
         }catch(ClassNotFoundException e){
-            Log.e(TAG, "drawable class in R.java not found");
+            Log.e(TAG, mainActivity.getPackageName()+".R.drawable"+" class in R.java not found");
             return;
         }catch(NoSuchFieldException e){
             Log.e(TAG, "icon field not found");
