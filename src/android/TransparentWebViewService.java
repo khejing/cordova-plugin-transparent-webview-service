@@ -105,9 +105,11 @@ public class TransparentWebViewService extends BackgroundService {
     class SystemExposedJsApi {
         @JavascriptInterface
         public void onMessage(String title, String text){
+            Log.i(TAG, "got message from JS, title is "+title+", text is "+text);
             if(TransparentWebViewService.this.hasListenerAdded()){
-                //send message to CordovaActivity
+                Log.i(TAG, "has activity, send message to it");
             }else{
+                Log.i(TAG, "no activity, just service, so show notification");
                 TransparentWebViewService.this.showNotification(title, text);
             }
         }
