@@ -29,6 +29,7 @@ import android.util.Log;
 
 public class TransparentWebViewService extends BackgroundService {
     private static final String TAG = "TransparentWebViewService";
+    private static int messageId = 0;
 
 	@Override
     public void onCreate(){
@@ -62,8 +63,8 @@ public class TransparentWebViewService extends BackgroundService {
     private void showNotification(){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         Intent notifyIntent = new Intent();
-        ComponentName mainActivity = findMainActivityComponentName(this);
-        notifyIntent.setComponent(mainActivity);
+        ComponentName mainActivityComponent = findMainActivityComponentName(this);
+        notifyIntent.setComponent(mainActivityComponent);
         // Sets the Activity to start in a new task
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent notifyPendingIntent =
@@ -74,27 +75,14 @@ public class TransparentWebViewService extends BackgroundService {
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
         builder.setContentIntent(notifyPendingIntent);
-        try{
-            Class rClass = Class.forName(mainActivity.getPackageName()+".R$drawable");
-            Field field = rClass.getField("icon");
-            int property = field.getInt(rClass);
-            builder.setSmallIcon(property);
-            builder.setContentTitle("TEST");
-            builder.setContentText("test");            
-        }catch(ClassNotFoundException e){
-            Log.e(TAG, mainActivity.getPackageName()+".R.drawable"+" class in R.java not found");
-            return;
-        }catch(NoSuchFieldException e){
-            Log.e(TAG, "icon field not found");
-            return;
-        }catch(IllegalAccessException e){
-            Log.e(TAG, "get icon field value error");
-            return;            
-        }
+        builder.setAutoCancel(true);
+        builder.setSmallIcon(this.getResources().getIdentifier("icon", "drawable", mainActivityComponent.getPackageName()));
+        builder.setContentTitle("TEST");
+        builder.setContentText("test");
         NotificationManager mNotificationManager =
             (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(1, builder.build());
-        Log.i(TAG, "show notification finished");
+        mNotificationManager.notify(messageId, builder.build());
+        messageId++;
     }
 
     private static ComponentName findMainActivityComponentName(Context context) {
@@ -117,7 +105,6 @@ public class TransparentWebViewService extends BackgroundService {
     class SystemExposedJsApi {
         @JavascriptInterface
         public void onMessage(String topic, String message){
-            Log.i(TAG, "onMessage has been called");
             if(TransparentWebViewService.this.hasListenerAdded()){
                 //send message to CordovaActivity
             }else{
