@@ -60,7 +60,7 @@ public class TransparentWebViewService extends BackgroundService {
         windowManager.addView(wv, params);
 	}
 
-    private void showNotification(){
+    private void showNotification(String title, String text){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         Intent notifyIntent = new Intent();
         ComponentName mainActivityComponent = findMainActivityComponentName(this);
@@ -77,8 +77,8 @@ public class TransparentWebViewService extends BackgroundService {
         builder.setContentIntent(notifyPendingIntent);
         builder.setAutoCancel(true);
         builder.setSmallIcon(this.getResources().getIdentifier("icon", "drawable", mainActivityComponent.getPackageName()));
-        builder.setContentTitle("TEST");
-        builder.setContentText("test");
+        builder.setContentTitle(title);
+        builder.setContentText(text);
         NotificationManager mNotificationManager =
             (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(messageId, builder.build());
@@ -104,11 +104,11 @@ public class TransparentWebViewService extends BackgroundService {
 
     class SystemExposedJsApi {
         @JavascriptInterface
-        public void onMessage(String topic, String message){
+        public void onMessage(String title, String text){
             if(TransparentWebViewService.this.hasListenerAdded()){
                 //send message to CordovaActivity
             }else{
-                TransparentWebViewService.this.showNotification();
+                TransparentWebViewService.this.showNotification(title, text);
             }
         }
     }
