@@ -80,7 +80,7 @@ public class TransparentWebViewService extends BackgroundService {
         builder.setContentTitle(title);
         builder.setContentText(text);
         builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-        builder.setVibrate(new long[](0, 2000));
+        builder.setVibrate(new long[]{0, 2000});
         NotificationManager mNotificationManager =
             (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(messageId, builder.build());
