@@ -17,6 +17,7 @@
     <!-- Permissions the Application Requires -->
     <uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 </config-file>
 
 <config-file parent="/manifest/application" target="AndroidManifest.xml">
