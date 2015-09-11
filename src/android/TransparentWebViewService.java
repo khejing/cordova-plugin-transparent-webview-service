@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import com.red_folder.phonegap.plugin.backgroundservice.BackgroundService;
 
+import android.annotation.TargetApi;
 import android.view.WindowManager;
 import android.graphics.PixelFormat;
 import android.view.Gravity;
