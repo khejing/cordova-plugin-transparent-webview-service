@@ -22,9 +22,10 @@ import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
+import android.content.pm.ApplicationInfo;
 import android.media.RingtoneManager;
 import android.util.Log;
 
@@ -53,6 +54,11 @@ public class TransparentWebViewService extends BackgroundService {
         final WebSettings settings = wv.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
+        ApplicationInfo appInfo = this.getApplicationContext().getApplicationInfo();
+        if ((appInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0 &&
+            android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            enableRemoteDebugging();
+        }
         if ((Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1)) {
             Log.e(TAG, "Disabled addJavascriptInterface() bridge since Android version is old.");
             return;
@@ -63,6 +69,16 @@ public class TransparentWebViewService extends BackgroundService {
         wv.loadUrl("file:///android_asset/www/background.html");
         windowManager.addView(wv, params);
 	}
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private void enableRemoteDebugging() {
+        try {
+            wv.setWebContentsDebuggingEnabled(true);
+        } catch (IllegalArgumentException e) {
+            Log.d(TAG, "You have one job! To turn on Remote Web Debugging! YOU HAVE FAILED! ");
+            e.printStackTrace();
+        }
+    }
 
     private void showNotification(String title, String text){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
