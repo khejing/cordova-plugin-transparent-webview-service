@@ -16,6 +16,7 @@ import android.webkit.WebView;
 import android.webkit.WebSettings;
 import android.webkit.JavascriptInterface;
 import android.os.Build;
+import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.app.PendingIntent;
 import android.app.NotificationManager;
