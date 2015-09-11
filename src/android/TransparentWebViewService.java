@@ -30,6 +30,9 @@ import android.util.Log;
 
 public class TransparentWebViewService extends BackgroundService {
     private static final String TAG = "TransparentWebViewService";
+    private WebView wv;
+    private boolean isActivityBound = false;
+    private JSONObject currentMsg;
     private static int messageId = 0;
 
 	@Override
@@ -45,7 +48,7 @@ public class TransparentWebViewService extends BackgroundService {
         params.width = 0;
         params.height = 0;
 
-        WebView wv = new WebView(this);
+        wv = new WebView(this);
         wv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         final WebSettings settings = wv.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -81,7 +84,7 @@ public class TransparentWebViewService extends BackgroundService {
         builder.setContentTitle(title);
         builder.setContentText(text);
         builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-        builder.setVibrate(new long[]{0, 2000});
+        builder.setVibrate(new long[]{0, 3000});
         NotificationManager mNotificationManager =
             (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(messageId, builder.build());
@@ -105,22 +108,40 @@ public class TransparentWebViewService extends BackgroundService {
         throw new RuntimeException("Could not find main activity");
     }
 
+    @Override
+    public IBinder onBind(Intent intent) {
+        isActivityBound = true;
+        return super.onBind(intent);
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent){
+        isActivityBound = false;
+        return super.onUnbind(intent);
+    }
+
     class SystemExposedJsApi {
         @JavascriptInterface
-        public void onMessage(String title, String text){
-            Log.i(TAG, "got message from JS, title is "+title+", text is "+text);
-            if(TransparentWebViewService.this.hasListenerAdded()){
-                Log.i(TAG, "has activity, send message to it");
-            }else{
-                Log.i(TAG, "no activity, just service, so show notification");
-                TransparentWebViewService.this.showNotification(title, text);
-            }
+        public void showNotification(String title, String text){
+            Log.i(TAG, "no activity, just service, so show notification, sender is "+title+", text is "+text);
+            TransparentWebViewService.this.showNotification(title, text);
+        }
+
+        @JavascriptInterface
+        public boolean isActivityBound(){
+            return TransparentWebViewService.this.isActivityBound;
+        }
+
+        @JavascriptInterface
+        public void onMessage(JSONObject msg){
+            TransparentWebViewService.this.currentMsg = msg;
+            TransparentWebViewService.this.runOnce();
         }
     }
 
     @Override
     protected JSONObject doWork() {
-       return null;
+       return currentMsg;
     }
 
     @Override
@@ -130,8 +151,47 @@ public class TransparentWebViewService extends BackgroundService {
 
     @Override
     protected void setConfig(JSONObject config) {
-       
-    }     
+        String type;
+        try{
+            type = config.getString("type");
+        }catch(JSONObject e){
+            Log.e(TAG, "msg from main activity error, no type field");
+            return;
+        }
+        if(type.equals("LoginInfo")){
+            String username;
+            String password;
+            String role;
+            try{
+                username = config.getString("username");
+                password = config.getString("password");
+                role = config.getString("role");
+            }catch(JSONObject e){
+                Log.e(TAG, "LoginInfo msg from main activity error");
+                return;
+            }
+            wv.loadUrl("javascript:Auth.login("+username+", "+password+", "+role+", loginCallback);localStorage.loginInfo = JSON.stringify({username: "+username+", password: "+password+", role: "+role+"});");
+        }else if(type.equals("Subscribe")){
+            String topic;
+            try{
+                topic = config.getString("topic");
+            }catch(JSONObject e){
+                Log.e(TAG, "Subscribe msg from main activity error");
+                return;
+            }
+            wv.loadUrl("javascript:MqttClient.subscribe("+topic+");");
+        }else if(type.equals("Publish")){
+            String topic, msg;
+            try{
+                topic = config.getString("topic");
+                msg = config.getString("message");
+            }catch(JSONObject e){
+                Log.e(TAG, "publish msg from main activity error");
+                return;
+            }
+            wv.loadUrl("javascript:MqttClient.publish("+topic+", "+msg");");
+        }
+    }
 
     @Override
     protected JSONObject initialiseLatestResult() {
