@@ -205,7 +205,7 @@ public class TransparentWebViewService extends BackgroundService {
                 Log.e(TAG, "publish msg from main activity error");
                 return;
             }
-            wv.loadUrl("javascript:MqttClient.publish("+topic+", "+msg");");
+            wv.loadUrl("javascript:MqttClient.publish("+topic+", "+msg+");");
         }
     }
 
