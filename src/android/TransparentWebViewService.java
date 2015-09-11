@@ -171,7 +171,7 @@ public class TransparentWebViewService extends BackgroundService {
         String type;
         try{
             type = config.getString("type");
-        }catch(JSONObject e){
+        }catch(JSONException e){
             Log.e(TAG, "msg from main activity error, no type field");
             return;
         }
@@ -183,7 +183,7 @@ public class TransparentWebViewService extends BackgroundService {
                 username = config.getString("username");
                 password = config.getString("password");
                 role = config.getString("role");
-            }catch(JSONObject e){
+            }catch(JSONException e){
                 Log.e(TAG, "LoginInfo msg from main activity error");
                 return;
             }
@@ -192,7 +192,7 @@ public class TransparentWebViewService extends BackgroundService {
             String topic;
             try{
                 topic = config.getString("topic");
-            }catch(JSONObject e){
+            }catch(JSONException e){
                 Log.e(TAG, "Subscribe msg from main activity error");
                 return;
             }
@@ -202,7 +202,7 @@ public class TransparentWebViewService extends BackgroundService {
             try{
                 topic = config.getString("topic");
                 msg = config.getString("message");
-            }catch(JSONObject e){
+            }catch(JSONException e){
                 Log.e(TAG, "publish msg from main activity error");
                 return;
             }
