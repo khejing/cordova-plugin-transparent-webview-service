@@ -70,6 +70,7 @@ public class TransparentWebViewService extends BackgroundService {
 
         wv.loadUrl("file:///android_asset/www/background.html");
         windowManager.addView(wv, params);
+        Log.i(TAG, "service onCreate() finished, webview is started");
 	}
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -129,12 +130,14 @@ public class TransparentWebViewService extends BackgroundService {
     @Override
     public IBinder onBind(Intent intent) {
         isActivityBound = true;
+        Log.i(TAG, "main activity bound to service");
         return super.onBind(intent);
     }
 
     @Override
     public boolean onUnbind(Intent intent){
         isActivityBound = false;
+        Log.i(TAG, "main activity unbound to service");
         return super.onUnbind(intent);
     }
 
@@ -172,6 +175,7 @@ public class TransparentWebViewService extends BackgroundService {
         String type;
         try{
             type = config.getString("type");
+            Log.i(TAG, "got msg from main activity, type is "+type);
         }catch(JSONException e){
             Log.e(TAG, "msg from main activity error, no type field");
             return;
@@ -184,6 +188,7 @@ public class TransparentWebViewService extends BackgroundService {
                 username = config.getString("username");
                 password = config.getString("password");
                 role = config.getString("role");
+                Log.i(TAG, "got login msg from main activity, username is "+username+", password is "+password+", role is "+role);
             }catch(JSONException e){
                 Log.e(TAG, "LoginInfo msg from main activity error");
                 return;
@@ -193,6 +198,7 @@ public class TransparentWebViewService extends BackgroundService {
             String topic;
             try{
                 topic = config.getString("topic");
+                Log.i(TAG, "got subscribe msg from main activity, topic is "+topic);
             }catch(JSONException e){
                 Log.e(TAG, "Subscribe msg from main activity error");
                 return;
@@ -203,11 +209,14 @@ public class TransparentWebViewService extends BackgroundService {
             try{
                 topic = config.getString("topic");
                 msg = config.getString("message");
+                Log.i(TAG, "got publish msg from main activity, topic is "+topic+", msg is "+msg);
             }catch(JSONException e){
                 Log.e(TAG, "publish msg from main activity error");
                 return;
             }
             wv.loadUrl("javascript:MqttClient.publish("+topic+", "+msg+");");
+        }else{
+            Log.w(TAG, "got msg from main activity, but type is unknown");
         }
     }
 
