@@ -160,6 +160,15 @@ public class TransparentWebViewService extends BackgroundService {
         }
     }
 
+    private void webviewLoadUrlInMainThread(String url){
+        wv.post(new Runnable(){
+            @Override
+            public void run() {
+                wv.loadUrl(url);
+            }
+        });
+    }
+
     @Override
     protected JSONObject doWork() {
        return currentMsg;
@@ -193,7 +202,7 @@ public class TransparentWebViewService extends BackgroundService {
                 Log.e(TAG, "LoginInfo msg from main activity error");
                 return;
             }
-            wv.loadUrl("javascript:Auth.login("+username+", "+password+", "+role+", loginCallback);localStorage.loginInfo = JSON.stringify({username: "+username+", password: "+password+", role: "+role+"});");
+            webviewLoadUrlInMainThread("javascript:Auth.login("+username+", "+password+", "+role+", loginCallback);localStorage.loginInfo = JSON.stringify({username: "+username+", password: "+password+", role: "+role+"});");
         }else if(type.equals("Subscribe")){
             String topic;
             try{
@@ -203,7 +212,7 @@ public class TransparentWebViewService extends BackgroundService {
                 Log.e(TAG, "Subscribe msg from main activity error");
                 return;
             }
-            wv.loadUrl("javascript:MqttClient.subscribe("+topic+");");
+            webviewLoadUrlInMainThread("javascript:MqttClient.subscribe("+topic+");");
         }else if(type.equals("Publish")){
             String topic, msg;
             try{
@@ -214,7 +223,7 @@ public class TransparentWebViewService extends BackgroundService {
                 Log.e(TAG, "publish msg from main activity error");
                 return;
             }
-            wv.loadUrl("javascript:MqttClient.publish("+topic+", "+msg+");");
+            webviewLoadUrlInMainThread("javascript:MqttClient.publish("+topic+", "+msg+");");
         }else{
             Log.w(TAG, "got msg from main activity, but type is unknown");
         }
