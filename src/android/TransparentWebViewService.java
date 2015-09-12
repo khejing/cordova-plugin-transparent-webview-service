@@ -14,6 +14,7 @@ import android.graphics.PixelFormat;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.webkit.WebSettings;
 import android.webkit.JavascriptInterface;
 import android.os.Build;
@@ -67,6 +68,11 @@ public class TransparentWebViewService extends BackgroundService {
         }
         SystemExposedJsApi exposedJsApi = new SystemExposedJsApi();
         wv.addJavascriptInterface(exposedJsApi, "simpleCordova");
+        wv.setWebViewClient(new WebViewClient() {
+            public void onPageFinished (WebView view, String url){
+                Log.i(TAG, "background webview page load finished");
+            }
+        });
 
         wv.loadUrl("file:///android_asset/www/background.html");
         windowManager.addView(wv, params);
