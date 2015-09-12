@@ -160,7 +160,7 @@ public class TransparentWebViewService extends BackgroundService {
         }
     }
 
-    private void webviewLoadUrlInMainThread(String url){
+    private void webviewLoadUrlInMainThread(final String url){
         wv.post(new Runnable(){
             @Override
             public void run() {
