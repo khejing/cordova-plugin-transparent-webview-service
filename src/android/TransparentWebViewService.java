@@ -215,7 +215,7 @@ public class TransparentWebViewService extends BackgroundService {
                 Log.e(TAG, "LoginInfo msg from main activity error");
                 return;
             }
-            webviewLoadUrlInMainThread("javascript:_Auth2['default'].login("+username+", "+password+", "+role+", loginCallback);localStorage.loginInfo = JSON.stringify({username: "+username+", password: "+password+", role: "+role+"});");
+            webviewLoadUrlInMainThread("javascript:Auth.login(\""+username+"\", \""+password+"\", \""+role+"\", loginCallback);localStorage.loginInfo = JSON.stringify({username: \""+username+"\", password: \""+password+"\", role: \""+role+"\"});");
         }else if(type.equals("Subscribe")){
             String topic;
             try{
@@ -225,7 +225,7 @@ public class TransparentWebViewService extends BackgroundService {
                 Log.e(TAG, "Subscribe msg from main activity error");
                 return;
             }
-            webviewLoadUrlInMainThread("javascript:_MqttClient$LoginErrorCode2['default'].subscribe("+topic+");");
+            webviewLoadUrlInMainThread("javascript:MqttClient.subscribe(\""+topic+"\");");
         }else if(type.equals("Publish")){
             String topic, msg;
             try{
@@ -236,7 +236,7 @@ public class TransparentWebViewService extends BackgroundService {
                 Log.e(TAG, "publish msg from main activity error");
                 return;
             }
-            webviewLoadUrlInMainThread("javascript:_MqttClient$LoginErrorCode2['default'].publish("+topic+", "+msg+");");
+            webviewLoadUrlInMainThread("javascript:MqttClient.publish(\""+topic+"\", \""+msg+"\");");
         }else{
             Log.w(TAG, "got msg from main activity, but type is unknown");
         }
