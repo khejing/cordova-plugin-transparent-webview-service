@@ -71,7 +71,12 @@ public class TransparentWebViewService extends BackgroundService {
         wv.setWebViewClient(new WebViewClient() {
             public void onPageFinished (WebView view, String url){
                 Log.i(TAG, "background webview page load finished");
-                currentMsg = new JSONObject("{type: \"PageFinished\"}");
+                try{
+                    currentMsg = new JSONObject("{type: \"PageFinished\"}");
+                }catch(JSONException e){
+                    Log.e(TAG, "construct PageFinished msg error");
+                    return;
+                }
                 runOnce();
             }
         });
