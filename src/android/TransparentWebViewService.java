@@ -168,7 +168,12 @@ public class TransparentWebViewService extends BackgroundService {
         @JavascriptInterface
         public void onMessage(String json){
             Log.i(TAG, "have message to send to main activity: "+json);
-            TransparentWebViewService.this.currentMsg = new JSONObject(json);
+            try{
+                TransparentWebViewService.this.currentMsg = new JSONObject(json);
+            }catch(JSONException e){
+                Log.e(TAG, "construct JSONObject from javascript msg error");
+                return;
+            }            
             TransparentWebViewService.this.runOnce();
         }
     }
