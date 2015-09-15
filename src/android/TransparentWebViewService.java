@@ -67,6 +67,7 @@ public class TransparentWebViewService extends BackgroundService {
         SystemExposedJsApi exposedJsApi = new SystemExposedJsApi();
         wv.addJavascriptInterface(exposedJsApi, "simpleCordova");
         wv.setWebViewClient(new WebViewClient() {
+            @Override
             public void onPageFinished (WebView view, String url){
                 Log.i(TAG, "background webview page load finished");
                 try{
