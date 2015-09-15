@@ -71,7 +71,7 @@ public class TransparentWebViewService extends BackgroundService {
             public void onPageFinished (WebView view, String url){
                 Log.i(TAG, "background webview page load finished");
                 try{
-                    currentMsg = new JSONObject("{type: \"PageFinished\"}");
+                    currentMsg = new JSONObject("{\"type\": \"PageFinished\"}");
                 }catch(JSONException e){
                     Log.e(TAG, "construct PageFinished msg error");
                     return;
@@ -166,9 +166,9 @@ public class TransparentWebViewService extends BackgroundService {
         }
 
         @JavascriptInterface
-        public void onMessage(JSONObject msg){
-            Log.i(TAG, "have message to send to main activity: "+msg.toString());
-            TransparentWebViewService.this.currentMsg = msg;
+        public void onMessage(String json){
+            Log.i(TAG, "have message to send to main activity: "+json);
+            TransparentWebViewService.this.currentMsg = new JSONObject(json);
             TransparentWebViewService.this.runOnce();
         }
     }
