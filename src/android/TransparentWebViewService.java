@@ -166,6 +166,7 @@ public class TransparentWebViewService extends BackgroundService {
 
         @JavascriptInterface
         public void onMessage(JSONObject msg){
+            Log.i(TAG, "have message to send to main activity")
             TransparentWebViewService.this.currentMsg = msg;
             TransparentWebViewService.this.runOnce();
         }
@@ -182,7 +183,8 @@ public class TransparentWebViewService extends BackgroundService {
 
     @Override
     protected JSONObject doWork() {
-       return currentMsg;
+        Log.i(TAG, "doWork return current msg");
+        return currentMsg;
     }
 
     @Override
@@ -213,8 +215,7 @@ public class TransparentWebViewService extends BackgroundService {
                 Log.e(TAG, "LoginInfo msg from main activity error");
                 return;
             }
-            //webviewLoadUrlInMainThread("javascript:Auth.login(\""+username+"\", \""+password+"\", \""+role+"\", loginCallback);localStorage.loginInfo = JSON.stringify({username: \""+username+"\", password: \""+password+"\", role: \""+role+"\"});");
-            webviewLoadUrlInMainThread("javascript:myEvents.emit(\"login\", \""+username+"\", \""+password+"\", \""+role+"\");");
+            webviewLoadUrlInMainThread("javascript:myEvents.emit(\"LoginInfo\", \""+username+"\", \""+password+"\", \""+role+"\");");
         }else if(type.equals("Subscribe")){
             String topic;
             try{
@@ -224,7 +225,7 @@ public class TransparentWebViewService extends BackgroundService {
                 Log.e(TAG, "Subscribe msg from main activity error");
                 return;
             }
-            webviewLoadUrlInMainThread("javascript:MqttClient.subscribe(\""+topic+"\");");
+            webviewLoadUrlInMainThread("javascript:myEvents.emit(\"Subscribe\", \""+topic+"\");");
         }else if(type.equals("Publish")){
             String topic, msg;
             try{
@@ -235,7 +236,7 @@ public class TransparentWebViewService extends BackgroundService {
                 Log.e(TAG, "publish msg from main activity error");
                 return;
             }
-            webviewLoadUrlInMainThread("javascript:MqttClient.publish(\""+topic+"\", \""+msg+"\");");
+            webviewLoadUrlInMainThread("javascript:myEvents.emit(\"Publish\", \""+topic+"\", \""+msg+"\");");
         }else{
             Log.w(TAG, "got msg from main activity, but type is unknown");
         }
