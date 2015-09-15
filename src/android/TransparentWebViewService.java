@@ -32,7 +32,7 @@ import android.util.Log;
 
 public class TransparentWebViewService extends BackgroundService {
     private static final String TAG = "TransparentWebViewService";
-    private WebView wv;
+    private static WebView wv;
     private boolean isActivityBound = false;
     private JSONObject currentMsg;
     private static int messageId = 0;
@@ -40,6 +40,11 @@ public class TransparentWebViewService extends BackgroundService {
 	@Override
     public void onCreate(){
 		super.onCreate();
+
+        if(wv != null){
+            Log.i(TAG, "webview has been started, just return");
+            return;
+        }
 
 		WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
@@ -175,6 +180,11 @@ public class TransparentWebViewService extends BackgroundService {
                 return;
             }            
             TransparentWebViewService.this.runOnce();
+            try{
+                setLatestResult(new JSONObject());
+            }catch(JSONException e){
+                Log.e(TAG, "construct new JSONObject error");
+            }
         }
     }
 
