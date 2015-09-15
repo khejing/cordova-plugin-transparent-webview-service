@@ -167,7 +167,7 @@ public class TransparentWebViewService extends BackgroundService {
 
         @JavascriptInterface
         public void onMessage(JSONObject msg){
-            Log.i(TAG, "have message to send to main activity");
+            Log.i(TAG, "have message to send to main activity: "+msg.toString());
             TransparentWebViewService.this.currentMsg = msg;
             TransparentWebViewService.this.runOnce();
         }
