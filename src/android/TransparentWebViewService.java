@@ -1,7 +1,5 @@
 package com.yang.eto1.CordovaPlugin.TransparentWebViewServicePlugin;
 
-import java.lang.reflect.Field;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
