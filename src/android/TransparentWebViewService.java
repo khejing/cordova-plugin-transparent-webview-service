@@ -55,8 +55,8 @@ public class TransparentWebViewService extends BackgroundService {
         final WebSettings settings = wv.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
-        ApplicationInfo appInfo = this.getApplicationContext().getApplicationInfo();
-        if ((appInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0 &&
+        //ApplicationInfo appInfo = this.getApplicationContext().getApplicationInfo();
+        if (/*(appInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0 &&*/
             android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
             enableRemoteDebugging();
         }
@@ -213,7 +213,8 @@ public class TransparentWebViewService extends BackgroundService {
                 Log.e(TAG, "LoginInfo msg from main activity error");
                 return;
             }
-            webviewLoadUrlInMainThread("javascript:Auth.login(\""+username+"\", \""+password+"\", \""+role+"\", loginCallback);localStorage.loginInfo = JSON.stringify({username: \""+username+"\", password: \""+password+"\", role: \""+role+"\"});");
+            //webviewLoadUrlInMainThread("javascript:Auth.login(\""+username+"\", \""+password+"\", \""+role+"\", loginCallback);localStorage.loginInfo = JSON.stringify({username: \""+username+"\", password: \""+password+"\", role: \""+role+"\"});");
+            webviewLoadUrlInMainThread("javascript:myEvents.emit(\"login\", \""+username+"\", \""+password+"\", \""+role+"\");");
         }else if(type.equals("Subscribe")){
             String topic;
             try{
