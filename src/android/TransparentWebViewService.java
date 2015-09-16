@@ -155,7 +155,7 @@ public class TransparentWebViewService extends BackgroundService {
     public boolean onUnbind(Intent intent){
         isActivityBound = false;
         Log.i(TAG, "main activity unbound to service");
-        return super.onUnbind(intent);
+        return true;
     }
 
     class SystemExposedJsApi {
