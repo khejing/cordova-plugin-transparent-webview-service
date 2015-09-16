@@ -32,6 +32,7 @@ import android.util.Log;
 
 public class TransparentWebViewService extends BackgroundService {
     private static final String TAG = "TransparentWebViewService";
+    private static WindowManager windowManager;
     private static WebView wv;
     private boolean isActivityBound = false;
     private JSONObject currentMsg;
@@ -46,7 +47,7 @@ public class TransparentWebViewService extends BackgroundService {
             return;
         }
 
-		WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+		windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_PHONE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
         params.gravity = Gravity.TOP | Gravity.LEFT;
@@ -89,6 +90,12 @@ public class TransparentWebViewService extends BackgroundService {
         windowManager.addView(wv, params);
         Log.i(TAG, "service onCreate() finished, webview is started");
 	}
+
+    @Override
+	public void onDestroy() {
+        windowManager.removeView(wv);
+        super.onDestroy();
+    }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void enableRemoteDebugging() {
@@ -172,7 +179,6 @@ public class TransparentWebViewService extends BackgroundService {
 
         @JavascriptInterface
         public void onMessage(String json){
-            Log.i(TAG, "have message to send to main activity: "+json);
             try{
                 TransparentWebViewService.this.currentMsg = new JSONObject(json);
             }catch(JSONException e){
@@ -229,6 +235,8 @@ public class TransparentWebViewService extends BackgroundService {
                 return;
             }
             webviewLoadUrlInMainThread("javascript:myEvents.emit(\"LoginInfo\", \""+username+"\", \""+password+"\", \""+role+"\");");
+        }else if(type.equals("Logout")){
+            webviewLoadUrlInMainThread("javascript:myEvents.emit(\"Logout\");");
         }else if(type.equals("Subscribe")){
             String topic;
             try{
