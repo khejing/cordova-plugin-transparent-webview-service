@@ -146,6 +146,12 @@ public class TransparentWebViewService extends BackgroundService {
     }
 
     @Override
+    public void onRebind (Intent intent){
+        isActivityBound = true;
+        Log.i(TAG, "main activity rebound to service");
+    }
+
+    @Override
     public boolean onUnbind(Intent intent){
         isActivityBound = false;
         Log.i(TAG, "main activity unbound to service");
