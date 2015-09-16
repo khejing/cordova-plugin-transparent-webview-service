@@ -180,11 +180,7 @@ public class TransparentWebViewService extends BackgroundService {
                 return;
             }            
             TransparentWebViewService.this.runOnce();
-            try{
-                setLatestResult(new JSONObject());
-            }catch(JSONException e){
-                Log.e(TAG, "construct new JSONObject error");
-            }
+            setLatestResult(null);
         }
     }
 
