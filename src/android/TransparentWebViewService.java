@@ -240,16 +240,17 @@ public class TransparentWebViewService extends BackgroundService {
             }
             webviewLoadUrlInMainThread("javascript:myEvents.emit(\"Subscribe\", \""+topic+"\");");
         }else if(type.equals("Publish")){
-            String topic, msg;
+            String topic;
+            JSONObject msg;
             try{
                 topic = config.getString("topic");
-                msg = config.getString("message");
-                Log.i(TAG, "got publish msg from main activity, topic is "+topic+", msg is "+msg);
+                msg = config.getJSONObject("message");
+                Log.i(TAG, "got publish msg from main activity, topic is "+topic+", msg is "+msg.toString());
             }catch(JSONException e){
                 Log.e(TAG, "publish msg from main activity error");
                 return;
             }
-            webviewLoadUrlInMainThread("javascript:myEvents.emit(\"Publish\", \""+topic+"\", \""+msg+"\");");
+            webviewLoadUrlInMainThread("javascript:myEvents.emit(\"Publish\", \""+topic+"\", "+msg.toString()+");");
         }else{
             Log.w(TAG, "got msg from main activity, but type is unknown");
         }
