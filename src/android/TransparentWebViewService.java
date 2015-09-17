@@ -99,7 +99,7 @@ public class TransparentWebViewService extends BackgroundService {
         Intent notifyIntent = new Intent();
         ComponentName mainActivityComponent = findMainActivityComponentName(this);
         notifyIntent.setComponent(mainActivityComponent);
-        notifyIntent.putExtra("NOTIFICATION_OPTIONS", "{\"contactId\": "+contactId+"}");
+        notifyIntent.putExtra("NOTIFICATION_OPTIONS", "{\"data\": {\"contactId\": "+contactId+"}}");
         // Sets the Activity to start in a new task
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent notifyPendingIntent =
