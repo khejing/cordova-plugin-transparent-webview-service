@@ -6,6 +6,8 @@ import org.json.JSONObject;
 
 import com.red_folder.phonegap.plugin.backgroundservice.BackgroundService;
 
+import de.appplant.cordova.plugin.notification.Options;
+
 import android.annotation.TargetApi;
 import android.view.WindowManager;
 import android.graphics.PixelFormat;
@@ -94,11 +96,12 @@ public class TransparentWebViewService extends BackgroundService {
         }
     }
 
-    private void showNotification(String title, String text){
+    private void showNotification(String title, String text, int contactId){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         Intent notifyIntent = new Intent();
         ComponentName mainActivityComponent = findMainActivityComponentName(this);
         notifyIntent.setComponent(mainActivityComponent);
+        notifyIntent.putExtra(Options.EXTRA, "{\"contactId\": "+contactId+"}");
         // Sets the Activity to start in a new task
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent notifyPendingIntent =
@@ -159,9 +162,9 @@ public class TransparentWebViewService extends BackgroundService {
 
     class SystemExposedJsApi {
         @JavascriptInterface
-        public void showNotification(String title, String text){
-            Log.i(TAG, "no activity, just service, so show notification, sender is "+title+", text is "+text);
-            TransparentWebViewService.this.showNotification(title, text);
+        public void showNotification(String title, String text, int contactId){
+            Log.i(TAG, "no activity, just service, so show notification, sender is "+title+", text is "+text+", contactId is "+contactId);
+            TransparentWebViewService.this.showNotification(title, text, contactId);
         }
 
         @JavascriptInterface
