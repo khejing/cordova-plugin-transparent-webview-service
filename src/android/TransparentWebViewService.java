@@ -6,8 +6,6 @@ import org.json.JSONObject;
 
 import com.red_folder.phonegap.plugin.backgroundservice.BackgroundService;
 
-import de.appplant.cordova.plugin.notification.Options;
-
 import android.annotation.TargetApi;
 import android.view.WindowManager;
 import android.graphics.PixelFormat;
@@ -101,7 +99,7 @@ public class TransparentWebViewService extends BackgroundService {
         Intent notifyIntent = new Intent();
         ComponentName mainActivityComponent = findMainActivityComponentName(this);
         notifyIntent.setComponent(mainActivityComponent);
-        notifyIntent.putExtra(Options.EXTRA, "{\"contactId\": "+contactId+"}");
+        notifyIntent.putExtra("NOTIFICATION_OPTIONS", "{\"contactId\": "+contactId+"}");
         // Sets the Activity to start in a new task
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent notifyPendingIntent =
