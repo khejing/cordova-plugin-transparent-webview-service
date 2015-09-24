@@ -99,14 +99,9 @@ public class TransparentWebViewService extends BackgroundService {
     private void showNotification(String title, String text, int contactId){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         Intent notifyIntent = new Intent(this, ClickActivity.class);
-        ComponentName mainActivityComponent = findMainActivityComponentName(this);
-//        notifyIntent.setComponent(mainActivityComponent);
         Uri notificationRing = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         //must contain soundUri, or will print stack
-        notifyIntent.putExtra("NOTIFICATION_OPTIONS", "{\"soundUri\": \""+notificationRing+"\", \"data\": \"{\\\"contactId\\\": "+contactId+"}\"}");
-        //\"text\": \""+text+"\", \"title\": \""+title+"\", \"autoClear\": true, 
-        // Sets the Activity to start in a new task
-//        notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        notifyIntent.putExtra("NOTIFICATION_OPTIONS", "{\"soundUri\":\""+notificationRing+"\", \"data\":\"{\\\"contactId\\\":"+contactId+"}\"}");
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         int requestCode = new Random().nextInt();
         PendingIntent notifyPendingIntent =
@@ -114,34 +109,17 @@ public class TransparentWebViewService extends BackgroundService {
                 this,
                 requestCode,
                 notifyIntent,
-                PendingIntent.FLAG_CANCEL_CURRENT//FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_CANCEL_CURRENT
         );
         builder.setContentIntent(notifyPendingIntent);
         builder.setAutoCancel(true);
-        builder.setSmallIcon(this.getResources().getIdentifier("icon", "drawable", mainActivityComponent.getPackageName()));
+        builder.setSmallIcon(this.getResources().getIdentifier("icon", "drawable", getPackageName()));
         builder.setContentTitle(title);
         builder.setContentText(text);
         builder.setSound(notificationRing);
         NotificationManager mNotificationManager =
             (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify((int)System.currentTimeMillis(), builder.build());
-    }
-
-    private static ComponentName findMainActivityComponentName(Context context) {
-        PackageManager pm = context.getPackageManager();
-        PackageInfo packageInfo = null;
-        try {
-            packageInfo = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_ACTIVITIES);
-        } catch (PackageManager.NameNotFoundException e) {
-            throw new RuntimeException("No package info for " + context.getPackageName(), e);
-        }
-
-        for (ActivityInfo activityInfo : packageInfo.activities) {
-            if ((activityInfo.flags & ActivityInfo.FLAG_EXCLUDE_FROM_RECENTS) == 0) {
-                return new ComponentName(packageInfo.packageName, activityInfo.name);
-            }
-        }
-        throw new RuntimeException("Could not find main activity");
     }
 
     @Override
