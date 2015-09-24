@@ -124,7 +124,7 @@ public class TransparentWebViewService extends BackgroundService {
         builder.setSound(notificationRing);
         NotificationManager mNotificationManager =
             (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(System.currentTimeMillis().intValue(), builder.build());
+        mNotificationManager.notify((int)System.currentTimeMillis(), builder.build());
     }
 
     private static ComponentName findMainActivityComponentName(Context context) {
