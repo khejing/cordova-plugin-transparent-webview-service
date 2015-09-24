@@ -65,7 +65,7 @@ public class TransparentWebViewService extends BackgroundService {
         settings.setDomStorageEnabled(true);
         //ApplicationInfo appInfo = this.getApplicationContext().getApplicationInfo();
         if (/*(appInfo.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0 &&*/
-            android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             enableRemoteDebugging();
         }
         if ((Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1)) {
