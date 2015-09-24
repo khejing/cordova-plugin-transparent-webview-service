@@ -103,7 +103,7 @@ public class TransparentWebViewService extends BackgroundService {
 //        notifyIntent.setComponent(mainActivityComponent);
         Uri notificationRing = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         //must contain soundUri, or will print stack
-        notifyIntent.putExtra("NOTIFICATION_OPTIONS", "{\"soundUri\": \""+notificationRing+"\", \"data\": {\"contactId\": "+contactId+"}}");
+        notifyIntent.putExtra("NOTIFICATION_OPTIONS", "{\"soundUri\": \""+notificationRing+"\", \"data\": \"{\\\"contactId\\\": "+contactId+"}\"}");
         //\"text\": \""+text+"\", \"title\": \""+title+"\", \"autoClear\": true, 
         // Sets the Activity to start in a new task
 //        notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -189,11 +189,15 @@ public class TransparentWebViewService extends BackgroundService {
         }
     }
 
-    private void webviewLoadUrlInMainThread(final String url){
+    private void webviewExecuteJSInMainThread(final String js){
         wv.post(new Runnable(){
             @Override
             public void run() {
-                wv.loadUrl(url);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+-                    wv.evaluateJavascript(js, null);
+-               } else {
+-                    wv.loadUrl("javascript:" + js);
+-               }
             }
         });
     }
@@ -233,9 +237,9 @@ public class TransparentWebViewService extends BackgroundService {
                 Log.e(TAG, "LoginInfo msg from main activity error");
                 return;
             }
-            webviewLoadUrlInMainThread("javascript:myEvents.emit(\"LoginInfo\", \""+username+"\", \""+password+"\", \""+role+"\");");
+            webviewExecuteJSInMainThread("myEvents.emit(\"LoginInfo\", \""+username+"\", \""+password+"\", \""+role+"\");");
         }else if(type.equals("Logout")){
-            webviewLoadUrlInMainThread("javascript:myEvents.emit(\"Logout\");");
+            webviewExecuteJSInMainThread("myEvents.emit(\"Logout\");");
         }else if(type.equals("Subscribe")){
             String topic;
             try{
@@ -245,7 +249,7 @@ public class TransparentWebViewService extends BackgroundService {
                 Log.e(TAG, "Subscribe msg from main activity error");
                 return;
             }
-            webviewLoadUrlInMainThread("javascript:myEvents.emit(\"Subscribe\", \""+topic+"\");");
+            webviewExecuteJSInMainThread("myEvents.emit(\"Subscribe\", \""+topic+"\");");
         }else if(type.equals("Publish")){
             String topic;
             JSONObject msg;
@@ -257,7 +261,7 @@ public class TransparentWebViewService extends BackgroundService {
                 Log.e(TAG, "publish msg from main activity error");
                 return;
             }
-            webviewLoadUrlInMainThread("javascript:myEvents.emit(\"Publish\", \""+topic+"\", "+msg.toString()+");");
+            webviewExecuteJSInMainThread("myEvents.emit(\"Publish\", \""+topic+"\", "+msg.toString()+");");
         }else{
             Log.w(TAG, "got msg from main activity, but type is unknown");
         }
