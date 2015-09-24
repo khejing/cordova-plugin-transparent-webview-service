@@ -1,10 +1,12 @@
 package com.yang.eto1.CordovaPlugin.TransparentWebViewServicePlugin;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.util.Random;
 
 import com.red_folder.phonegap.plugin.backgroundservice.BackgroundService;
+
+import de.appplant.cordova.plugin.localnotification.ClickActivity;
 
 import android.annotation.TargetApi;
 import android.view.WindowManager;
@@ -28,6 +30,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.ApplicationInfo;
 import android.media.RingtoneManager;
+import android.net.Uri;
 import android.util.Log;
 
 public class TransparentWebViewService extends BackgroundService {
@@ -36,7 +39,6 @@ public class TransparentWebViewService extends BackgroundService {
     private static WebView wv;
     private boolean isActivityBound = false;
     private JSONObject currentMsg;
-    private static int messageId = 0;
 
 	@Override
     public void onCreate(){
@@ -96,29 +98,33 @@ public class TransparentWebViewService extends BackgroundService {
 
     private void showNotification(String title, String text, int contactId){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        Intent notifyIntent = new Intent();
+        Intent notifyIntent = new Intent(this, ClickActivity.class);
         ComponentName mainActivityComponent = findMainActivityComponentName(this);
-        notifyIntent.setComponent(mainActivityComponent);
-        notifyIntent.putExtra("NOTIFICATION_OPTIONS", "{\"data\": {\"contactId\": "+contactId+"}}");
+//        notifyIntent.setComponent(mainActivityComponent);
+        Uri notificationRing = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        //must contain soundUri, or will print stack
+        notifyIntent.putExtra("NOTIFICATION_OPTIONS", "{\"soundUri\": \""+notificationRing+"\", \"data\": {\"contactId\": "+contactId+"}}");
+        //\"text\": \""+text+"\", \"title\": \""+title+"\", \"autoClear\": true, 
         // Sets the Activity to start in a new task
-        notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        int requestCode = new Random().nextInt();
         PendingIntent notifyPendingIntent =
                 PendingIntent.getActivity(
                 this,
-                0,
+                requestCode,
                 notifyIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_CANCEL_CURRENT//FLAG_UPDATE_CURRENT
         );
         builder.setContentIntent(notifyPendingIntent);
         builder.setAutoCancel(true);
         builder.setSmallIcon(this.getResources().getIdentifier("icon", "drawable", mainActivityComponent.getPackageName()));
         builder.setContentTitle(title);
         builder.setContentText(text);
-        builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+        builder.setSound(notificationRing);
         NotificationManager mNotificationManager =
             (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(messageId, builder.build());
-        messageId++;
+        mNotificationManager.notify(System.currentTimeMillis().intValue(), builder.build());
     }
 
     private static ComponentName findMainActivityComponentName(Context context) {
