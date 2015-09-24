@@ -194,10 +194,10 @@ public class TransparentWebViewService extends BackgroundService {
             @Override
             public void run() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
--                    wv.evaluateJavascript(js, null);
--               } else {
--                    wv.loadUrl("javascript:" + js);
--               }
+                    wv.evaluateJavascript(js, null);
+                } else {
+                    wv.loadUrl("javascript:" + js);
+                }
             }
         });
     }
