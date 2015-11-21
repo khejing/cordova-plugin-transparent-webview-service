@@ -45,6 +45,7 @@ public class TransparentWebViewService extends BackgroundService {
 		super.onCreate();
 
         if(wv != null){
+            wv.loadUrl("file:///android_asset/www/background.html");
             Log.i(TAG, "webview has been started, just return");
             return;
         }
