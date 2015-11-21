@@ -1,1 +1,1 @@
-# cordova-plugin-transparent-webview--service
+# cordova-plugin-transparent-webview-service
