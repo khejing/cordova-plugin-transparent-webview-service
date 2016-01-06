@@ -44,12 +44,6 @@ public class TransparentWebViewService extends BackgroundService {
     public void onCreate(){
 		super.onCreate();
 
-        if(wv != null){
-            wv.loadUrl("file:///android_asset/www/background.html");
-            Log.i(TAG, "webview has been started, just return");
-            return;
-        }
-
 		windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.TYPE_PHONE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, PixelFormat.TRANSLUCENT);
@@ -84,6 +78,7 @@ public class TransparentWebViewService extends BackgroundService {
     @Override
 	public void onDestroy() {
         windowManager.removeView(wv);
+        wv = null;
         super.onDestroy();
     }
 
