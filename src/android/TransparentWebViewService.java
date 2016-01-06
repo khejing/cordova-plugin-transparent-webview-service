@@ -78,7 +78,7 @@ public class TransparentWebViewService extends BackgroundService {
     @Override
 	public void onDestroy() {
         windowManager.removeView(wv);
-        wv = null;
+        wv.destroy();
         super.onDestroy();
     }
 
