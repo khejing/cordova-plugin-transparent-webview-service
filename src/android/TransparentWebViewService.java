@@ -92,12 +92,12 @@ public class TransparentWebViewService extends BackgroundService {
         }
     }
 
-    private void showNotification(String title, String text, int contactId){
+    private void showNotification(String title, String text, String customData){
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         Intent notifyIntent = new Intent(this, ClickActivity.class);
         Uri notificationRing = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         //must contain soundUri, or will print stack
-        notifyIntent.putExtra("NOTIFICATION_OPTIONS", "{\"soundUri\":\""+notificationRing+"\", \"data\":\"{\\\"contactId\\\":"+contactId+"}\"}");
+        notifyIntent.putExtra("NOTIFICATION_OPTIONS", "{\"soundUri\":\""+notificationRing+"\", \"data\":"+customData+"}");
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         int requestCode = new Random().nextInt();
         PendingIntent notifyPendingIntent =
@@ -112,6 +112,7 @@ public class TransparentWebViewService extends BackgroundService {
         builder.setSmallIcon(this.getResources().getIdentifier("icon", "drawable", getPackageName()));
         builder.setContentTitle(title);
         builder.setContentText(text);
+        builder.setTicker(title+": "+text);
         builder.setSound(notificationRing);
         NotificationManager mNotificationManager =
             (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -140,9 +141,9 @@ public class TransparentWebViewService extends BackgroundService {
 
     class SystemExposedJsApi {
         @JavascriptInterface
-        public void showNotification(String title, String text, int contactId){
-            Log.i(TAG, "no activity, just service, so show notification, sender is "+title+", text is "+text+", contactId is "+contactId);
-            TransparentWebViewService.this.showNotification(title, text, contactId);
+        public void showNotification(String title, String text, String customData){
+            Log.i(TAG, "no activity, just service, so show notification, title is "+title+", text is "+text+", customData json is "+customData);
+            TransparentWebViewService.this.showNotification(title, text, customData);
         }
 
         @JavascriptInterface
