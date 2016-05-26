@@ -215,6 +215,8 @@ public class TransparentWebViewService extends BackgroundService {
             webviewExecuteJSInMainThread("myEvents.emit(\"LoginInfo\", \""+username+"\", \""+password+"\", \""+role+"\");");
         }else if(type.equals("Logout")){
             webviewExecuteJSInMainThread("myEvents.emit(\"Logout\");");
+        }else if(type.equals("ActivityStartingWhenServiceRunning")){
+            webviewExecuteJSInMainThread("myEvents.emit(\"ActivityStarting\");");
         }else if(type.equals("Subscribe")){
             String topic;
             try{
