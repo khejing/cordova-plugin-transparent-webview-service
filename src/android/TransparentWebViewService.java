@@ -239,6 +239,18 @@ public class TransparentWebViewService extends BackgroundService {
                 return;
             }
             webviewExecuteJSInMainThread("myEvents.emit(\"Publish\", \""+topic+"\", "+msg.toString()+");");
+        }else if(type.equals("PublishReliably")){
+            String topic;
+            JSONObject msg;
+            try{
+                topic = config.getString("topic");
+                msg = config.getJSONObject("message");
+                Log.i(TAG, "got publish msg from main activity, topic is "+topic+", msg is "+msg.toString());
+            }catch(JSONException e){
+                Log.e(TAG, "publish msg from main activity error");
+                return;
+            }
+            webviewExecuteJSInMainThread("myEvents.emit(\"PublishReliably\", \""+topic+"\", "+msg.toString()+");");
         }else{
             Log.w(TAG, "got msg from main activity, but type is unknown");
         }
